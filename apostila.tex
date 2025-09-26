@@ -86,6 +86,48 @@ A & B & \( A \cdot B \) \\
 \textit{A função só é verdadeira quando $A$ e $B$ são ambos $1$.}
 \end{center}
 
+\subsection*{Exemplo 3:}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+A & B & \( A + B \) \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 1 \\
+1 & 0 & 1 \\
+1 & 1 & 1 \\ 
+\hline
+\end{tabular}
+
+\vspace{0.5em}
+\textit{A função só é verdadeira quando $A$ ou $B$ são $1$.}
+\end{center}
+
+\subsection*{Exemplo 4:}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+A & B & C & $ (\overline{A \cdot B}) \cdot C$ \\
+\hline
+0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1 \\
+0 & 1 & 0 & 0 \\
+0 & 1 & 1 & 1 \\ 
+1 & 0 & 0 & 0 \\
+1 & 0 & 1 & 1 \\
+1 & 1 & 0 & 0 \\
+1 & 1 & 1 & 0 \\ 
+\hline
+\end{tabular}
+
+\vspace{0.5em}
+\textit{A função só é verdadeira quando $C$ e $\overline{A \cdot B}$ são ambos verdadeiras.}
+\end{center}
+
+\begin{tcolorbox}[mynote, title= Observação: números de linhas da Tabela Verdade]
+A cada nova variável adicionada à tabela, o número de linhas dessa tabela verdade dobra. Dá para perceber isso comparando, por exemplo, os exemplos 1 e 2 - onde foram adicionadas 2 novas possibilidades - ou então do exemplo 3 para o 4, que aumentaram 4 possibilidade.  
+\end{tcolorbox}
+
 \section{Álgebra de Boole}
 
 A Álgebra de Boole utiliza apenas dois valores:
@@ -94,6 +136,7 @@ A Álgebra de Boole utiliza apenas dois valores:
    \item Falso: $0$
 \end{itemize}
 
+\subsection{Operações Fundamentais}
 As três operações fundamentais são:
 
 \begin{enumerate}
@@ -116,19 +159,66 @@ As operações booleanas também podem ser representadas por diagramas de Venn:
 
 \vspace{0.2cm}
 
+\subsection{Representação na forma de Diagrama de Venn} 
+% A + B + C
 \begin{center}
-\textbf{Diagrama de Venn da expressão: $A + (B \cdot C)$}
+\textbf{Diagrama de Venn da expressão $f = A + B + C$}
+\end{center}
+
+\vspace{0.3cm}
+\begin{center}
+\begin{tikzpicture}
+   \begin{scope}
+      \fill[blue!20] (-1,0) circle (1.5);
+      \fill[blue!20] (1,0) circle (1.5);
+      \fill[blue!20] (0,1.8) circle (1.5);
+   \end{scope}
+   \draw (-1,0) circle (1.5) node[left] {$A$};
+   \draw (1,0) circle (1.5) node[right] {$B$};
+   \draw (0,1.8) circle (1.5) node[above] {$C$};
+   \node at (0,-2.5) {\footnotesize Região destacada: $A \cup B \cup C$};
+\end{tikzpicture}
+\end{center}
+\textbf{Explicação:} Nesse exemplo, para que a função $f$ acima tenha valor lógico 1, é preciso que ao menos \textbf{UMA} das variáveis seja verdadeira.
+\vspace{0.2cm}
+
+% A.B.C
+\begin{center}
+\textbf{Diagrama de Venn da função: $f = A \cdot B \cdot C$}
+\end{center}
+
+\vspace{0.3cm}
+\begin{center}
+\begin{tikzpicture}
+   \begin{scope}
+   \clip (-1,0) circle (1.5);
+   \clip (1,0) circle (1.5);
+   \clip (0,1.8) circle (1.5);
+   \fill[blue!20] (-1,0) circle (1.5); % Área comum a todos
+\end{scope}
+   \draw (-1,0) circle (1.5) node[left] {$A$};
+   \draw (1,0) circle (1.5) node[right] {$B$};
+   \draw (0,1.8) circle (1.5) node[above] {$C$};
+   \node at (0,-2.5) {\footnotesize Região destacada: $A \cap B \cap C$};
+\end{tikzpicture}
+\end{center}
+\textbf{Explicação:} Diferente do exemplo anterior, para que essa função $f$ seja verdadeira, é preciso que \textbf{TODAS} as variáveis tenham valor lógico 1.
+\vspace{0.2cm}
+
+% A + (B . C)
+\begin{center}
+\textbf{Diagrama de Venn da expressão: $f = A + (B \cdot C)$}
 \end{center}
 
 \vspace{0.3cm}
 
 \begin{center}
 \begin{tikzpicture}
-   \fill[red!30] (-1,0) circle (1.5); % Conjunto A
+   \fill[blue!20] (-1,0) circle (1.5); 
 
    \begin{scope}
    \clip (1,0) circle (1.5);
-   \fill[blue!30] (0,1.8) circle (1.5);
+   \fill[blue!20] (0,1.8) circle (1.5);
 \end{scope}
 
    \draw (-1,0) circle (1.5) node[left] {$A$};
@@ -138,11 +228,12 @@ As operações booleanas também podem ser representadas por diagramas de Venn:
    \node at (0,-2.5) {\footnotesize Região destacada: $A \cup (B \cap C)$};
 \end{tikzpicture}
 \end{center}
-
+\textbf{Explicação:}
 \vspace{0.2cm}
 
+% Nao(A.B.C)
 \begin{center}
-\textbf{Diagrama de Venn da expressão: $\overline{A \cdot B \cdot C}$}
+\textbf{Diagrama de Venn da expressão: $g = \overline{A \cdot B \cdot C}$}
 \end{center}
 
 \vspace{0.3cm}
@@ -150,7 +241,7 @@ As operações booleanas também podem ser representadas por diagramas de Venn:
 \begin{center}
 \begin{tikzpicture}
 
-\draw[black, thick, fill=purple!20] (-2.8,-1.8) rectangle (2.8,3.5);
+\draw[black, thick, fill=blue!20] (-2.8,-1.8) rectangle (2.8,3.5);
    \begin{scope}
       \clip (-1,0) circle (1.5);
       \clip (1,0) circle (1.5);
@@ -165,11 +256,15 @@ As operações booleanas também podem ser representadas por diagramas de Venn:
 
 \end{tikzpicture}
 \end{center}
-
 \vspace{0.5cm}
+
 \begin{center}
 \footnotesize Região destacada: $\overline{A \cap B \cap C}$
 \end{center}
+
+\textbf{Explicação:} E sse exemplo seria equivalente ao complemento da intersecção de todas as variávies. Por exemplo,  se uma função $f$  é determinada por essa intersecção e como visto anteriormente que essa expressão só é verdadeira quando todas as variáveis são simultaneamente 1, temos que nossa função $g$ é verdadeira sempre que $f$ for falsa, ou seja, ao menos uma das variáveis não for 1. 
+
+\vspace{0.5cm}
 
 \section{Expressões, Axiomas e Simplificação}
 
