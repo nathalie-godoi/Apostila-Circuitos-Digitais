@@ -1,0 +1,472 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{intersections}
+\usepackage[most]{tcolorbox}
+\tcbset{
+  mynote/.style={
+    colback=gray!10,
+    colframe=gray!80,
+    fonttitle=\bfseries,
+    coltitle=black,
+    boxrule=0.5pt,
+    arc=4pt,
+    left=6pt,
+    right=6pt,
+    top=4pt,
+    bottom=4pt
+  }
+}
+\geometry{a4paper, margin=2.5cm}
+
+\title{Apostila de Circuitos Digitais}
+\author{Julia Acras, Isabella Stuart, Nathalie Godoi e Rafaela L.}
+\date{XX/XX/2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Tabela Verdade}
+A tabela verdade é um quadro que representa todas as possíveis combinações lógicas entre variáveis booleanas. Ela mostra como os valores de entrada (0 ou 1) influenciam a saída de um circuito.
+
+Para construí-la, divide-se a tabela em duas partes: entradas (ou variáveis) e saídas (ou combinações resultantes). A cada nova variável adicionada, o número de combinações dobra, pois cada variável pode assumir dois valores: 0 ou 1.
+
+Assim, para \( n \) variáveis, o número total de linhas na tabela será \( 2^n \). Por exemplo, com 7 variáveis, temos \( 2^7 = 128 \) combinações possíveis.
+
+\textbf{Observação:} Neste material, utilizamos \( \overline{A} \) para representar a negação da variável \( A \).
+
+\subsection*{Operações Lógicas}
+\begin{itemize}
+   \item \textbf{Conjunção (AND) :} \( A \cdot B \) - verdadeiro somente se \( A \) e \( B \) forem verdadeiros.
+   \item \textbf{Disjunção (OR):} \( A + B \) - falso somente se \( A\) e \( B \) forem falsos.
+   \item \textbf{Negação (NOT):} \( \overline{A} \) - inverte o valor lógico de \( A \).
+   \item \textbf{Implicação:} \( A \rightarrow B \) - falso apenas se \( A \) for verdadeiro e \( B \) falso.
+   \item \textbf{Bicondicional:} \( A \leftrightarrow B \) - verdadeiro se \( A \) e \( B \) tiverem o mesmo valor lógico.
+\end{itemize}
+
+
+\subsection*{Exemplo 1:}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+A & \( \overline{A} \) \\
+\hline
+1 & 0 \\
+0 & 1 \\
+\hline
+\end{tabular}
+
+\vspace{0.5em}
+\textit{$\overline{A}$ tem sempre o valor lógico oposto de $A$.}
+\end{center}
+
+\subsection*{Exemplo 2:}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+A & B & \( A \cdot B \) \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+1 & 1 & 1 \\ 
+\hline
+\end{tabular}
+
+\vspace{0.5em}
+\textit{A função só é verdadeira quando $A$ e $B$ são ambos $1$.}
+\end{center}
+
+\section{Álgebra de Boole}
+
+A Álgebra de Boole utiliza apenas dois valores:
+\begin{itemize}
+   \item Verdadeiro: $1$
+   \item Falso: $0$
+\end{itemize}
+
+As três operações fundamentais são:
+
+\begin{enumerate}
+   \item \textbf{AND} (E lógico) \\
+   A saída da operação \textbf{AND} é verdadeira somente quando todas as entradas são verdadeiras, ou seja, basta que apenas uma entrada seja falsa (0) para tornar todo o circuito falso. 
+   \item \textbf{OR} (OU lógico) \\
+   A saída é verdadeira se ao menos uma das entradas é verdadeira. Logo, a única situação em que o circuito tem seu valor lógico falso é quando todas as entradas são 0.
+   \item \textbf{NOT} (Negação) \\
+   A saída é o inverso da entrada. Se a entrada for verdadeira (1), a saída será falsa (0) e vice-versa.
+\end{enumerate} 
+
+\begin{tcolorbox}[mynote, title= Observação: Relação com Diagrama de Venn]
+As operações booleanas também podem ser representadas por diagramas de Venn:
+\begin{itemize}
+   \item \textbf{AND} – Interseção entre os conjuntos $A$ e $B$
+   \item \textbf{OR} – União dos conjuntos $A$ e $B$
+   \item \textbf{NOT} – Complemento do conjunto $A$
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.2cm}
+
+\begin{center}
+\textbf{Diagrama de Venn da expressão: $A + (B \cdot C)$}
+\end{center}
+
+\vspace{0.3cm}
+
+\begin{center}
+\begin{tikzpicture}
+   \fill[red!30] (-1,0) circle (1.5); % Conjunto A
+
+   \begin{scope}
+   \clip (1,0) circle (1.5);
+   \fill[blue!30] (0,1.8) circle (1.5);
+\end{scope}
+
+   \draw (-1,0) circle (1.5) node[left] {$A$};
+   \draw (1,0) circle (1.5) node[right] {$B$};
+   \draw (0,1.8) circle (1.5) node[above] {$C$};
+
+   \node at (0,-2.5) {\footnotesize Região destacada: $A \cup (B \cap C)$};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{center}
+\textbf{Diagrama de Venn da expressão: $\overline{A \cdot B \cdot C}$}
+\end{center}
+
+\vspace{0.3cm}
+
+\begin{center}
+\begin{tikzpicture}
+
+\draw[black, thick, fill=purple!20] (-2.8,-1.8) rectangle (2.8,3.5);
+   \begin{scope}
+      \clip (-1,0) circle (1.5);
+      \clip (1,0) circle (1.5);
+      \clip (0,1.8) circle (1.5);
+      \fill[white] (-2.8,-1.8) rectangle (2.8,3.5);
+   \end{scope}
+
+   \draw[black, thick] (-1,0) circle (1.5) node[left] {$A$};
+   \draw[black, thick] (1,0) circle (1.5) node[right] {$B$};
+   \draw[black, thick] (0,1.8) circle (1.5) node[above] {$C$};
+   \node at (-2, 2.8) {$U$};
+
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.5cm}
+\begin{center}
+\footnotesize Região destacada: $\overline{A \cap B \cap C}$
+\end{center}
+
+\section{Expressões, Axiomas e Simplificação}
+
+Sendo \( X, Y\) e \( Z\) variáveis que assumem os valores lógicos 0 e 1, e utilizando os símbolos:
+\begin{itemize}
+   \item \( + \) para disjunção (OU lógico)
+   \item \( \cdot \) para conjunção (E lógico)
+   \item \( \overline{X} \) para negação de X
+\end{itemize}
+
+As propriedades fundamentais da Álgebra de Boole são representadas abaixo:
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Propriedade} & \textbf{Versão OR} & \textbf{Versão AND} \\
+\hline
+1 - Identidade       & \( X + 0 = X \)                             & \( X \cdot 1 = X \) \\
+2 - Elemento Nulo    & \( X + 1 = 1 \)                             & \( X \cdot 0 = 0 \) \\
+3 - Idempotência     & \( X + X = X \)                             & \( X \cdot X = X \) \\
+4 - Complemento      & \( X + \overline{X} = 1 \)                  & \( X \cdot \overline{X} = 0 \) \\
+5 - Involução        & \( \overline{\overline{X}} = X \)           & \( \overline{\overline{X}} = X \) \\
+6 - Comutativa       & \( X + Y = Y + X \)                         & \( X \cdot Y = Y \cdot X \) \\
+7 - Associativa      & \( (X + Y) + Z = X + (Y + Z) \)             & \( (X \cdot Y) \cdot Z = X \cdot (Y \cdot Z) \) \\
+8 - Distributiva     & \( X + (Y \cdot Z) = (X + Y) \cdot (X + Z) \) & \( X \cdot (Y + Z) = X \cdot Y + X \cdot Z \) \\
+9 - Absorção 1       & \( X + X \cdot Y = X \)                     & \( X \cdot (X + Y) = X \) \\
+10 - Absorção 2      & \( X + \overline{X} \cdot Y = X + Y \)      & \( X \cdot (\overline{X} + Y) = X \cdot Y \) \\
+11 - Consenso        & \( X \cdot Y + \overline{X} \cdot Z + Y \cdot Z = X \cdot Y + \overline{X} \cdot Z \) 
+                     & \( (X + Y)(\overline{X} + Z)(Y + Z) = (X + Y)(\overline{X} + Z) \) \\
+12 - De Morgan       & \( \overline{X + Y} = \overline{X} \cdot \overline{Y} \) 
+                     & \( \overline{X \cdot Y} = \overline{X} + \overline{Y} \) \\
+\hline
+\end{tabular}
+\end{center}
+
+As propriedades 2, 8, 9 e 11 serão demonstradas com tabelas verdades. As outras ficam a cargo do leitor demonstar.
+
+\section{Demonstração das Propriedades}
+
+\subsection{Propriedade 2: Elemento Nulo}
+
+Versão OR:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+$X$  & $X + 1$ \\
+\hline
+0 & 1 \\
+1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+Assim, independente do valor lógico de $X$ a função sempre 1.
+
+Versão AND: 
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+$X$  & $X \cdot 0$ \\
+\hline
+0 & 0 \\
+1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+Dessa forma, fica perceptível que o valor lógico de $X$ na função não altera o valor da função, que será sempre 0.
+
+\subsection{Propriedade 8: Distributiva}
+
+Versão OR:
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$X$  & $Y$ & $Z$ & $X + (Y \cdot Z)$ & $(X + Y) \cdot (X + Z)$ \\
+\hline
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 1 & 1 \\
+1 & 0 & 0 & 1 & 1 \\
+1 & 0 & 1 & 1 & 1 \\
+1 & 1 & 0 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 \\
+\hline 
+\end{tabular}
+\end{center}
+
+
+Versão AND:
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$X$  & $Y$ & $Z$ & $X \cdot (Y + Z)$ & $(X \cdot Y) + (X \cdot Z)$ \\
+\hline
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 & 0 \\
+1 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 1 & 1 \\
+1 & 1 & 0 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Propriedade 9: Absorção 1}
+
+Versão OR:
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+$X$  & $Y$ & $X + (X \cdot  Y)$ \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 0 \\
+1 & 0 & 1 \\
+1 & 1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+Versão AND:
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+$X$  & $Y$ & $X \cdot (X + Y)$ \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 0 \\
+1 & 0 & 1 \\
+1 & 1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Propriedade 11: Consensus}
+
+Versão OR:
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$X$  & $Y$ & $Z$ & $X \cdot Y + \overline{X} \cdot Z + Y \cdot Z$ & $X \cdot Y + \overline{X} \cdot Z$ \\
+\hline
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1 & 1 \\
+0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 1 & 1 \\
+1 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 0 \\
+1 & 1 & 0 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+Versão AND:
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$X$  & $Y$ & $Z$ &  $(X + Y)(\overline{X} + Z)(Y + Z)$ & $(X + Y)(\overline{X} + Z)$ \\
+\hline
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 1 & 1 \\
+0 & 1 & 1 & 1 & 1 \\
+1 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 1 & 1 \\
+1 & 1 & 0 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{MINTERMOS E MAXTERMOS}
+Mintermos e maxternos são formas canônicas de representar funções booleanas
+Toda expressão booleanas pode ser obtida através da sua tabela verdade
+\begin{quote}
+\textbf{Observação:} Dizemos que uma expressão está na \textit{forma canônica} quando ela é representada por uma \textbf{soma de mintermos} (forma canônica disjuntiva) ou um \textbf{produto de maxtermos} (forma canônica conjuntiva). Em ambas, todas as variáveis da função aparecem em cada termo, direta ou negada.
+\end{quote}
+
+\subsection{Mintermos}
+Mintermi: é a forma canônica de representar uma linha da tabela verdade utilizando o operador AND (E lógico) entre todas as variáveis da função.
+Cada variável pode aparecer de duas formas: direta ou negada, dependendo do valor que ela assume na linha da tabela.
+
+\textit{Notação}: 
+\begin{itemize}
+   \item Valor 0: a variável aparece \textbf{negada} (exemplo: $A = 0 \Rightarrow \overline{A}$)
+   \item Valor 1: a variável aparece \textbf{direta} (exemplo: $A = 1 \Rightarrow A$)
+\end{itemize}
+
+O mintermo da primeira linha da tabela verdade é o $m_0$ e o da útima será $m_{2^n - 1}$, sendo $n$ o número de variáveis da função.
+Para construir um mintermo, pega-se todas as variáveis da linha e usa-se a operação lógica \textbf{AND} entre elas, respeitando o uso da forma direta ou negada de acordo com os valores. Assim, cada mintermo representa exatamente uma linha onde a saída da função é igual a 1.
+
+\begin{tcolorbox}[mynote, title=Notação – Forma Canônica por Mintermos]
+A notação \textit{$f(A, B, C) = \sum m(x, y, z)$} indica que a função $f$ é expressa como uma \textbf{soma de mintermos}, ou seja, uma disjunção (OU) dos termos onde a saída é igual a 1 na tabela verdade. As letras "x", "y" e "z" indicam as \textbf{linhas} que a função é \textbf{1}. 
+\end{tcolorbox} 
+
+\vspace{0.5cm}
+
+\subsection{Maxtermo}
+Maxtermo: é a forma canônica de representar uma linha da tabela verdade utilizando o operador OR (OU lógico) entre todas as variáveis da função. 
+A contrução dos maxtermos é semlhante à dos mintemos, porém segue a lógica inversa:
+
+\textit{Notação}:
+\begin{itemize}
+   \item Valor 0: a variável aparece \textbf{direta} (exemplo: $A = 0 \Rightarrow A$)
+   \item Valor 1: a variável aparece \textbf{negada} (exemplo: $A = 1 \Rightarrow \overline{A}$)
+\end{itemize}
+
+Para cada linha da tabela verdade em que a saída é 0, pode-se formar um maxtermo. O maxtermo da primeira linha da tabela verdade é o $M_0$, e o último será $M_{2^n - 1}$, com $n$ sendo o número de variáveis.
+
+\begin{tcolorbox}[mynote, title=Notação – Forma Canônica por Maxtermos]
+A notação \textit{$f(A, B, C) = \prod M(x, y, z)$} indica que a função $f$ é expressa como uma \textbf{produto de maxtermos}, ou seja, uma conjunção (AND) dos termos onde a saída é igual a 0 na tabela verdade. As letras "x", "y" e "z" indicam as \textbf{linhas} que a função é \textbf{zero}.
+\end{tcolorbox} 
+
+\vspace{0.5cm}
+
+\textbf{Exemplo}:
+\[
+f = A + B
+\]
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$A$  & $B$ & $f$ & Mintermo & Maxtermo \\
+\hline
+0 & 0 & 0 & $m_0 = \overline{A}\overline{B}$ & $M_0 = A + B$ \\
+0 & 1 & 1 & $m_1 = \overline{A}B$            & $M_1 = A + \overline{B}$ \\
+1 & 0 & 1 & $m_2 = A\overline{B}$            & $M_2 = \overline{A} + B$ \\
+1 & 1 & 1 & $m_3 = AB$                       & $M_3 = \overline{A} + \overline{B}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+   \item Os \textbf{mintermos} representam as linhas em que $f = 1$.
+   \item Os \textbf{maxtermos} representam as linhas em que $f = 0$.
+   \item A função $f = A + B$ tem como forma canônica:
+   \begin{itemize}
+      \item \textbf{Soma de mintermos:} $f = m_1 + m_2 + m_3 = \overline{A}B + A\overline{B} + AB$
+      \item \textbf{Produto de maxtermos:} $f = M_0 = (A + B)$
+   \end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}[mynote, title=Mintermos, Maxtermos e Complemento]
+Como cada mintermo é o complemento de seu maxtermo correspondente, podemos dizer que o complemento de uma função $f$ é representado pela multiplicação (AND) dos maxtermos associados às linhas onde $f = 0$.
+
+No exemplo acima, como $f = A + B$, temos que $f = 1$ nas linhas 1, 2 e 3, e $f = 0$ apenas na linha 0. Logo, o complemento de $f$ é:
+
+\[
+f' = M_0 = A + B
+\quad \Rightarrow \quad f = \overline{A + B}
+\]
+
+Assim, mostramos que o maxtermo $M_0$ representa exatamente o valor de $f'$ nesta função.
+\end{tcolorbox}
+
+\section{Circuito Combinacional}
+
+\textbf{Circuitos combinacionais} são aqueles que só dependem do estado atual da entrada, ou seja, não possuem \textbf{memória}.
+Um exemplo simples é um circuito onde a saída $f$ é dada por $f = A \cdot B$, usando uma porta \textbf{AND} de duas entradas.
+
+\vspace{0.5cm}
+
+Esses circuitos incluem:
+
+\begin{itemize}
+   \item Somadores
+   \item Comparadores
+   \item Codificadores
+   \item Decodificadores
+   \item Multiplexadores
+\end{itemize}
+
+\section{Circuitos Sequenciais}
+
+\textbf{Diferente} dos circuitos combinacionais, os \textbf{circuitos sequenciais} dependem tanto das \textbf{entradas atuais} como do \textbf{estado anterior (memória)}.
+
+Eles utilizam elementos de \textbf{armazenamento}, como flip-flops, para guardar o estado interno. Portanto, a saída é uma função das entradas e do estado armazenado. 
+
+\vspace{0.5cm}
+
+São utilizados em:
+
+\begin{itemize}
+   \item Regustradores
+   \item Máquinas de Estados
+   \item Contadores
+\end{itemize}
+
+\vspace{0.5cm}
+
+Os circuitos sequenciais podem ser \textbf{síncronos} (controlados por um sinal de clock) ou \textbf{assíncronos} (controlados por variações nas entradas)
+
+\end{document}
+
