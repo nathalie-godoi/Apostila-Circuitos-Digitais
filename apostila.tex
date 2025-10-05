@@ -7,6 +7,10 @@
 \usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{array}
+\usepackage{pdflscape}
 \usetikzlibrary{intersections}
 \usepackage[most]{tcolorbox}
 \tcbset{
@@ -34,17 +38,62 @@
 \maketitle
 
 \tableofcontents
+\clearpage
+
+\section{Terminologia e Símbolos}
+Neste seção, apresentamos os principais símbolo usados nas operações booleanas para garantir o entedimento dos conceitos apresentados no texto. 
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Símbolo} & \textbf{Operação / Descrição} \\
+\hline
+$+$ & OR (Disjunção Lógica) \\
+$\cdot$ & AND (Conjunção Lógica) \\
+$\overline{X}$ & NOT (Negação de $X$) \\
+$\sum$ & Soma de mintermos (forma canônica disjuntiva) \\
+$\prod$ & Produto de maxtermos (forma canônica conjuntiva) \\
+\hline
+\end{tabular}
+\end{center}
+
 
 \section{Tabela Verdade}
+\subsection{Introdução}
 A tabela verdade é um quadro que representa todas as possíveis combinações lógicas entre variáveis booleanas. Ela mostra como os valores de entrada (0 ou 1) influenciam a saída de um circuito.
 
-Para construí-la, divide-se a tabela em duas partes: entradas (ou variáveis) e saídas (ou combinações resultantes). A cada nova variável adicionada, o número de combinações dobra, pois cada variável pode assumir dois valores: 0 ou 1.
+Para construí-la, divide-se a tabela em duas partes: entradas (ou variáveis) e saídas (ou combinações resultantes). A cada nova variável adicionada, o número de combinações dobra, pois cada variável pode assumir dois valores: \(0\) ou \(1\).
 
 Assim, para \( n \) variáveis, o número total de linhas na tabela será \( 2^n \). Por exemplo, com 7 variáveis, temos \( 2^7 = 128 \) combinações possíveis.
 
 \textbf{Observação:} Neste material, utilizamos \( \overline{A} \) para representar a negação da variável \( A \).
 
-\subsection*{Operações Lógicas}
+\subsection{Construção da Tabela Verdade}
+Na Tabela Verdade, as variáveis de entrada são colocadas do lado esquerdo, enquanto a função resultante que representa o circuito aparece à direita.
+Por exemplo, na função $f$ definida a partir da variável $A$, colocamos na coluna da esquerda $A$ e, na direita, o resultado, que depende do valor lógico de $A$. Assim, teremos:
+
+\begin{center}
+$ f = \overline{A}$
+\vspace{0.5em}
+\begin{tikzpicture}
+   \node[inner sep=0pt] (tabela) {
+      \begin{tabular}{|c|c|}
+      \hline
+      \textbf{A} & \(\overline{A}\) \\
+      \hline
+      1 & 0 \\
+      0 & 1 \\
+      \hline
+      \end{tabular}
+   };
+
+   \draw[->, thick] (-2.5, 0.25) -- (-1.1, 0.25)
+      node[left] at (-2.5, 0.25) {\footnotesize \textbf{Variável de entrada (A)}};
+   \draw[->, thick] (2.5, 0.25) -- (1.1, 0.25)
+      node[right] at (2.5, 0.25) {\footnotesize \textbf{Saída (\(\overline{A}\))}};
+\end{tikzpicture}
+\end{center}
+
+\subsection{Operações Lógicas}
 \begin{itemize}
    \item \textbf{Conjunção (AND) :} \( A \cdot B \) - verdadeiro somente se \( A \) e \( B \) forem verdadeiros.
    \item \textbf{Disjunção (OR):} \( A + B \) - falso somente se \( A\) e \( B \) forem falsos.
@@ -53,8 +102,8 @@ Assim, para \( n \) variáveis, o número total de linhas na tabela será \( 2^n
    \item \textbf{Bicondicional:} \( A \leftrightarrow B \) - verdadeiro se \( A \) e \( B \) tiverem o mesmo valor lógico.
 \end{itemize}
 
-
-\subsection*{Exemplo 1:}
+\subsection*{Exemplo de Negação (\textbf{NOT}): }
+$ f = \overline{A}$
 \begin{center}
 \begin{tabular}{|c|c|}
 \hline
@@ -69,7 +118,8 @@ A & \( \overline{A} \) \\
 \textit{$\overline{A}$ tem sempre o valor lógico oposto de $A$.}
 \end{center}
 
-\subsection*{Exemplo 2:}
+\subsection*{Exemplo de Conjunção (\textbf{AND}): }
+$ s = A \cdot B$
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
@@ -86,7 +136,8 @@ A & B & \( A \cdot B \) \\
 \textit{A função só é verdadeira quando $A$ e $B$ são ambos $1$.}
 \end{center}
 
-\subsection*{Exemplo 3:}
+\subsection*{Exemplo de Disjunção (\textbf{OR}):}
+$ g = A + B$
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
@@ -103,26 +154,38 @@ A & B & \( A + B \) \\
 \textit{A função só é verdadeira quando $A$ ou $B$ são $1$.}
 \end{center}
 
-\subsection*{Exemplo 4:}
+\subsection*{Exemplo Composto: Disjunção, Conjunção e Negação:}
+Considere a função:
 \begin{center}
-\begin{tabular}{|c|c|c|c|}
+$h = \overline{A \cdot B} \cdot C$
+\end{center}
+Para construir a tabela verdade dessa função, primeiro calculamos\( A \cdot B\), depois aplicamos a negação, e, por fim, combinamos esse resultado com \( C \).
+
+\begin{center}
+\begin{minipage}{0.44\textwidth}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-A & B & C & $ (\overline{A \cdot B}) \cdot C$ \\
+A & B & C & \( A \cdot B \) & \( \overline{A \cdot B} \) & \( \overline{A \cdot B} \cdot C \) \\
 \hline
-0 & 0 & 0 & 0 \\
-0 & 0 & 1 & 1 \\
-0 & 1 & 0 & 0 \\
-0 & 1 & 1 & 1 \\ 
-1 & 0 & 0 & 0 \\
-1 & 0 & 1 & 1 \\
-1 & 1 & 0 & 0 \\
-1 & 1 & 1 & 0 \\ 
+0 & 0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0 & 1 & 1 \\
+0 & 1 & 0 & 0 & 1 & 0 \\
+0 & 1 & 1 & 0 & 1 & 1 \\
+1 & 0 & 0 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 1 & 1 \\
+1 & 1 & 0 & 1 & 0 & 0 \\
+1 & 1 & 1 & 1 & 0 & 0 \\
 \hline
 \end{tabular}
-
-\vspace{0.5em}
-\textit{A função só é verdadeira quando $C$ e $\overline{A \cdot B}$ são ambos verdadeiras.}
+\end{minipage}%
+\hspace{1em}%
+\begin{minipage}{0.2\textwidth}
+   \vspace{1em}
+   \textit{Note que a função $h$ só é verdadeira quando $C$ e $\overline{A \cdot B}$ são ambos verdadeiras.}
+\end{minipage}
 \end{center}
+
+Essa tabela permite acompanhar passo a passo o cálculo da função \( h \) para todas as combinações possíveis das variáveis \( A \), \( B \) e \( C \).
 
 \begin{tcolorbox}[mynote, title= Observação: números de linhas da Tabela Verdade]
 A cada nova variável adicionada à tabela, o número de linhas dessa tabela verdade dobra. Dá para perceber isso comparando, por exemplo, os exemplos 1 e 2 - onde foram adicionadas 2 novas possibilidades - ou então do exemplo 3 para o 4, que aumentaram 4 possibilidade.  
@@ -231,7 +294,6 @@ As operações booleanas também podem ser representadas por diagramas de Venn:
 \textbf{Explicação:}
 \vspace{0.2cm}
 
-% Nao(A.B.C)
 \begin{center}
 \textbf{Diagrama de Venn da expressão: $g = \overline{A \cdot B \cdot C}$}
 \end{center}
@@ -262,8 +324,7 @@ As operações booleanas também podem ser representadas por diagramas de Venn:
 \footnotesize Região destacada: $\overline{A \cap B \cap C}$
 \end{center}
 
-\textbf{Explicação:} E sse exemplo seria equivalente ao complemento da intersecção de todas as variávies. Por exemplo,  se uma função $f$  é determinada por essa intersecção e como visto anteriormente que essa expressão só é verdadeira quando todas as variáveis são simultaneamente 1, temos que nossa função $g$ é verdadeira sempre que $f$ for falsa, ou seja, ao menos uma das variáveis não for 1. 
-
+\textbf{Explicação:} Esse exemplo é equivalente ao complemento da interseção de todas as variáveis. Por exemplo, se uma função $f$ é determinada por essa interseção, e como visto anteriormente essa expressão só é verdadeira quando todas as variáveis são simultaneamente 1, temos que nossa função $g$ é verdadeira sempre que $f$ for falsa, ou seja, quando ao menos uma das variáveis não for 1.
 \vspace{0.5cm}
 
 \section{Expressões, Axiomas e Simplificação}
@@ -275,27 +336,51 @@ Sendo \( X, Y\) e \( Z\) variáveis que assumem os valores lógicos 0 e 1, e uti
    \item \( \overline{X} \) para negação de X
 \end{itemize}
 
-As propriedades fundamentais da Álgebra de Boole são representadas abaixo:
+As propriedades fundamentais da Álgebra de Boole serão representadas a seguir, separadas pelas operações OR e AND, para facilitar a compreensão.
+\subsection{Versão OR (Soma lógica)}
 
 \begin{center}
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|l|}
 \hline
-\textbf{Propriedade} & \textbf{Versão OR} & \textbf{Versão AND} \\
+\textbf{Propriedade (OR)} & \textbf{Expressão} \\
 \hline
-1 - Identidade       & \( X + 0 = X \)                             & \( X \cdot 1 = X \) \\
-2 - Elemento Nulo    & \( X + 1 = 1 \)                             & \( X \cdot 0 = 0 \) \\
-3 - Idempotência     & \( X + X = X \)                             & \( X \cdot X = X \) \\
-4 - Complemento      & \( X + \overline{X} = 1 \)                  & \( X \cdot \overline{X} = 0 \) \\
-5 - Involução        & \( \overline{\overline{X}} = X \)           & \( \overline{\overline{X}} = X \) \\
-6 - Comutativa       & \( X + Y = Y + X \)                         & \( X \cdot Y = Y \cdot X \) \\
-7 - Associativa      & \( (X + Y) + Z = X + (Y + Z) \)             & \( (X \cdot Y) \cdot Z = X \cdot (Y \cdot Z) \) \\
-8 - Distributiva     & \( X + (Y \cdot Z) = (X + Y) \cdot (X + Z) \) & \( X \cdot (Y + Z) = X \cdot Y + X \cdot Z \) \\
-9 - Absorção 1       & \( X + X \cdot Y = X \)                     & \( X \cdot (X + Y) = X \) \\
-10 - Absorção 2      & \( X + \overline{X} \cdot Y = X + Y \)      & \( X \cdot (\overline{X} + Y) = X \cdot Y \) \\
-11 - Consenso        & \( X \cdot Y + \overline{X} \cdot Z + Y \cdot Z = X \cdot Y + \overline{X} \cdot Z \) 
-                     & \( (X + Y)(\overline{X} + Z)(Y + Z) = (X + Y)(\overline{X} + Z) \) \\
-12 - De Morgan       & \( \overline{X + Y} = \overline{X} \cdot \overline{Y} \) 
-                     & \( \overline{X \cdot Y} = \overline{X} + \overline{Y} \) \\
+1 - Identidade       & \( X + 0 = X \) \\
+2 - Elemento Nulo    & \( X + 1 = 1 \) \\
+3 - Idempotência     & \( X + X = X \) \\
+4 - Complemento      & \( X + \overline{X} = 1 \) \\
+5 - Involução        & \( \overline{\overline{X}} = X \) \\
+6 - Comutativa       & \( X + Y = Y + X \) \\
+7 - Associativa      & \( (X + Y) + Z = X + (Y + Z) \) \\
+8 - Distributiva     & \( X + (Y \cdot Z) = (X + Y)(X + Z) \) \\
+9 - Absorção 1       & \( X + X \cdot Y = X \) \\
+10 - Absorção 2      & \( X + \overline{X} \cdot Y = X + Y \) \\
+11 - Consenso        & \( X \cdot Y + \overline{X} \cdot Z + Y \cdot Z = X \cdot Y + \overline{X} \cdot Z \) \\
+12 - De Morgan       & \( \overline{X + Y} = \overline{X} \cdot \overline{Y} \) \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+
+\subsection{Versão AND (Produto Lógico)}
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Propriedade (AND)} & \textbf{Expressão} \\
+\hline
+1 - Identidade       & \( X \cdot 1 = X \) \\
+2 - Elemento Nulo    & \( X \cdot 0 = 0 \) \\
+3 - Idempotência     & \( X \cdot X = X \) \\
+4 - Complemento      & \( X \cdot \overline{X} = 0 \) \\
+5 - Involução        & \( \overline{\overline{X}} = X \) \\
+6 - Comutativa       & \( X \cdot Y = Y \cdot X \) \\
+7 - Associativa      & \( (X \cdot Y) \cdot Z = X \cdot (Y \cdot Z) \) \\
+8 - Distributiva     & \( X \cdot (Y + Z) = X \cdot Y + X \cdot Z \) \\
+9 - Absorção 1       & \( X \cdot (X + Y) = X \) \\
+10 - Absorção 2      & \( X \cdot (\overline{X} + Y) = X \cdot Y \) \\
+11 - Consenso        & \( (X + Y)(\overline{X} + Z)(Y + Z) = (X + Y)(\overline{X} + Z) \) \\
+12 - De Morgan       & \( \overline{X \cdot Y} = \overline{X} + \overline{Y} \) \\
 \hline
 \end{tabular}
 \end{center}
@@ -307,6 +392,11 @@ As propriedades 2, 8, 9 e 11 serão demonstradas com tabelas verdades. As outras
 \subsection{Propriedade 2: Elemento Nulo}
 
 Versão OR:
+Essa propriedade diz que: 
+\[
+X + 1 = 1
+\]
+Veja a tabela verdade a seguir que comprova a igualdade
 \begin{center}
 \begin{tabular}{|c|c|}
 \hline
